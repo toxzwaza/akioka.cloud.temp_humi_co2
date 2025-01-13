@@ -57,8 +57,8 @@ if __name__ == "__main__":
             while count < 5:
                 try:
                         # SHT31から温湿度を取得
-                        temperature = round(sht31.temperature, 1)  # 温度 (℃)
-                        humidity = round(sht31.relative_humidity, 1)  # 湿度 (%)
+                        temperature = round(sht31.temperature, 0)  # 温度 (℃)
+                        humidity = round(sht31.relative_humidity, 0)  # 湿度 (%)
 
                         # subprocessを使用してCO2濃度を取得
                         co2_ppm = get_co2_concentration()
