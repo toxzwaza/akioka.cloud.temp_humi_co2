@@ -40,6 +40,11 @@ def get_mac_address():
 
 
 if __name__ == "__main__":
+    import random
+    wait_time = random.randint(0, 60)
+    print(f"{wait_time}秒待機します...")
+    time.sleep(wait_time)
+    
     mac_address = get_mac_address()
     print(f'mac_address: {mac_address}')
     
