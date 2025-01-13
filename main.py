@@ -40,18 +40,14 @@ def get_mac_address():
 
 
 if __name__ == "__main__":
-
-
     mac_address = get_mac_address()
     print(f'mac_address: {mac_address}')
     
-
     try:
         response = requests.get(f"https://akioka.cloud/getPlaceId", params={"mac_address": mac_address})
         if response.status_code == 200:
-            print("場所IDの取得に成功しました")
             place_id = response.json()
-            print(f"場所ID: {place_id}")
+            
             # SHT31の初期化
             i2c = busio.I2C(board.SCL, board.SDA)
             sht31 = SHT31D(i2c)
@@ -61,17 +57,19 @@ if __name__ == "__main__":
             while count < 5:
                 try:
                         # SHT31から温湿度を取得
-                        temperature = sht31.temperature  # 温度 (℃)
-                        humidity = sht31.relative_humidity  # 湿度 (%)
+                        temperature = round(sht31.temperature, 1)  # 温度 (℃)
+                        humidity = round(sht31.relative_humidity, 1)  # 湿度 (%)
 
                         # subprocessを使用してCO2濃度を取得
                         co2_ppm = get_co2_concentration()
 
+                        
                         if temperature and humidity and co2_ppm:
-
                             # コンソールに出力
                             print(f"温度: {temperature:.2f}℃, 湿度: {humidity:.2f}%, CO2濃度: {co2_ppm} ppm")
                         else:
+                            # センサー取得エラー
+                            print('センサー取得エラー:')
                             count += 1
                         
 
@@ -89,21 +87,24 @@ if __name__ == "__main__":
                             response_json = response.json()
                             if response_json.get('status') == True:
                                 print("データ送信に成功しました")
+                                break
                             else:
-                                print(response_json.get('msg'))
+                                # サーバーサイドエラー
+                                print(f'サーバーサイドエラー:{response_json.get("msg")}')
                                 count += 1
                                 
                         except Exception as e:
-                            print(f"データ送信エラー: {e}")
+                            # リクエストエラー
+                            print(f"データリクエストエラー: {e}")
                             count += 1
                         
-                        time.sleep(2)  # 2秒待機
-                        sys.exit()
+                        time.sleep(5)
+
                 except KeyboardInterrupt:
                     print("終了します...")
 
         else:
-            print(f"場所IDの取得に失敗しました: {response.status_code}")
+            print(f"場所IDの取得に失敗しました")
     except Exception as e:
         print(f"場所ID取得エラー: {e}")
 
