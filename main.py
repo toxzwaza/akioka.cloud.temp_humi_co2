@@ -78,14 +78,14 @@ if __name__ == "__main__":
                         # サーバーにデータを送信
                         try:
                             url = "https://akioka.cloud/data"  # サーバーのURLを設定
-                            data = {
+                            params = {
                                 "temperature": round(temperature, 2),
                                 "humidity": round(humidity, 2), 
                                 "co2": co2_ppm,
                                 "place_id": place_id,
                             }
                             
-                            response = requests.post(url, json=data)
+                            response = requests.get(url, params=params)
                             print(response)
                                 
                         except Exception as e:
