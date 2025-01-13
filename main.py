@@ -7,7 +7,8 @@ import json
 import requests
 import netifaces
 import sys
-
+from notify import send_notify
+import random
 
 
 # CO2濃度を取得する関数（subprocessを使用）
@@ -40,13 +41,18 @@ def get_mac_address():
 
 
 if __name__ == "__main__":
-    import random
+
     wait_time = random.randint(0, 60)
     print(f"{wait_time}秒待機します...")
     time.sleep(wait_time)
     
+
+    
     mac_address = get_mac_address()
     print(f'mac_address: {mac_address}')
+    mention_ids = ['to-murakami@akioka-ltd.jp']
+    send_notify(mention_ids, f'{mac_address}でデータを取得しました。')
+    
     
     try:
         response = requests.get(f"https://akioka.cloud/getPlaceId", params={"mac_address": mac_address})
