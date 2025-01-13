@@ -86,13 +86,14 @@ if __name__ == "__main__":
                             }
                             
                             response = requests.post(url, json=data)
-                            print(response.status)
+                            print(response)
                                 
                         except Exception as e:
                             print(f"データ送信エラー: {e}")
                             count += 1
                         
                         time.sleep(2)  # 2秒待機
+                        sys.exit()
                 except KeyboardInterrupt:
                     print("終了します...")
 
