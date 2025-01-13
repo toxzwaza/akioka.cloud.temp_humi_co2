@@ -13,7 +13,7 @@ def send_notify(mention_ids, message):
     """
 
     # Webhook URLをベタ書きで指定
-    webhook_url = "https://example.webhook.office.com/webhookb2/..."  # 必要に応じてURLを変更
+    webhook_url = "https://1966akioka.webhook.office.com/webhookb2/24ce70d8-1691-4b5e-aa90-67e8f56b36de@2f4ef158-134f-4faa-8db9-ef94be3b003a/IncomingWebhook/06ec01534f77477f9679950d30ee326e/2300d87e-df72-43f2-9367-9269f638e309/V2IJW5BzNLuCXyS-1pxN-7C7Kz4wq_zOJuSow6OIc6hWU1"
 
     # メンション部分を生成
     mentions = [
