@@ -44,6 +44,7 @@ if __name__ == "__main__":
 
     mac_address = get_mac_address()
     print(f'mac_address: {mac_address}')
+    
 
     try:
         response = requests.get(f"https://akioka.cloud/getPlaceId", params={"mac_address": mac_address})
@@ -70,9 +71,9 @@ if __name__ == "__main__":
 
                             # コンソールに出力
                             print(f"温度: {temperature:.2f}℃, 湿度: {humidity:.2f}%, CO2濃度: {co2_ppm} ppm")
-                            break
                         else:
                             count += 1
+                        
 
                         # サーバーにデータを送信
                         try:
@@ -85,10 +86,7 @@ if __name__ == "__main__":
                             }
                             
                             response = requests.post(url, json=data)
-                            if response.status_code == 200:
-                                print("データの送信に成功しました")
-                            else:
-                                print(f"データの送信に失敗しました: {response.status_code}")
+                            print(response.status)
                                 
                         except Exception as e:
                             print(f"データ送信エラー: {e}")
