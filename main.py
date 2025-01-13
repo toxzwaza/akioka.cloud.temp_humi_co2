@@ -86,7 +86,12 @@ if __name__ == "__main__":
                             }
                             
                             response = requests.get(url, params=params)
-                            print(response)
+                            response_json = response.json()
+                            if response_json.get('status') == True:
+                                print("データ送信に成功しました")
+                            else:
+                                print(response_json.get('msg'))
+                                count += 1
                                 
                         except Exception as e:
                             print(f"データ送信エラー: {e}")
