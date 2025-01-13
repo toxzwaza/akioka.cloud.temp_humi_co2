@@ -21,31 +21,30 @@ def get_co2_concentration():
         print(f"CO2データ取得エラー: {e}")
         return "N/A"
 
-# en0のMACアドレスを取得
-def get_all_mac_addresses():
+# wlan0のMACアドレスを取得
+def get_mac_address():
     # 利用可能なすべてのネットワークインターフェースを取得
     interfaces = netifaces.interfaces()
-    mac_addresses = {}
     
-    # すべてのインターフェースのMACアドレスを取得
-    for interface in interfaces:
-        try:
-            # インターフェースのアドレス情報を取得
-            addrs = netifaces.ifaddresses(interface)
-            # MACアドレスはAF_LINK (17) に格納されています
-            if netifaces.AF_LINK in addrs:
-                mac_addresses[interface] = addrs[netifaces.AF_LINK][0]['addr']
-        except Exception as e:
-            print(f"{interface}のMACアドレス取得中にエラーが発生: {e}")
+    # wlan0のMACアドレスを取得
+    try:
+        # インターフェースのアドレス情報を取得
+        addrs = netifaces.ifaddresses('wlan0')
+        # MACアドレスはAF_LINK (17) に格納されています
+        if netifaces.AF_LINK in addrs:
+            return addrs[netifaces.AF_LINK][0]['addr']
+    except Exception as e:
+        print(f"wlan0のMACアドレス取得中にエラーが発生: {e}")
     
-    return mac_addresses
+    return None
 
 
 if __name__ == "__main__":
 
 
-    get_all_mac_addresses()
-    sys.exit()
+    mac_address = get_mac_address()
+    print(f'mac_address: {mac_address}')
+
     try:
         response = requests.get(f"https://akioka.cloud/getPlaceId", params={"mac_address": mac_address})
         if response.status_code == 200:
