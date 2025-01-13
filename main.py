@@ -6,6 +6,7 @@ import subprocess
 import json
 import requests
 import netifaces
+import sys
 
 
 
@@ -21,31 +22,30 @@ def get_co2_concentration():
         return "N/A"
 
 # en0のMACアドレスを取得
-def get_en0_mac_address():
+def get_all_mac_addresses():
     # 利用可能なすべてのネットワークインターフェースを取得
     interfaces = netifaces.interfaces()
+    mac_addresses = {}
     
-    # en0のMACアドレスを取得
+    # すべてのインターフェースのMACアドレスを取得
     for interface in interfaces:
-        if interface == "en0":
-            try:
-                # インターフェースのアドレス情報を取得
-                addrs = netifaces.ifaddresses(interface)
-                # MACアドレスはAF_LINK (17) に格納されています
-                if netifaces.AF_LINK in addrs:
-                    return addrs[netifaces.AF_LINK][0]['addr']
-            except Exception as e:
-                print(f"en0のMACアドレス取得中にエラーが発生: {e}")
-                return None
+        try:
+            # インターフェースのアドレス情報を取得
+            addrs = netifaces.ifaddresses(interface)
+            # MACアドレスはAF_LINK (17) に格納されています
+            if netifaces.AF_LINK in addrs:
+                mac_addresses[interface] = addrs[netifaces.AF_LINK][0]['addr']
+        except Exception as e:
+            print(f"{interface}のMACアドレス取得中にエラーが発生: {e}")
     
-    return None
+    return mac_addresses
+
 
 if __name__ == "__main__":
 
 
-    # en0のMACアドレスを取得
-    mac_address = get_en0_mac_address()
-    print(f"en0のMACアドレス: {mac_address}")
+    get_all_mac_addresses()
+    sys.exit()
     try:
         response = requests.get(f"https://akioka.cloud/getPlaceId", params={"mac_address": mac_address})
         if response.status_code == 200:
