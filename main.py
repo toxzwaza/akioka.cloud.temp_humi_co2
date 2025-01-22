@@ -49,9 +49,9 @@ if __name__ == "__main__":
 
     
     mac_address = get_mac_address()
-    print(f'mac_address: {mac_address}')
-    mention_ids = ['to-murakami@akioka-ltd.jp']
-    send_notify(mention_ids, f'{mac_address}でデータを取得しました。')
+    #print(f'mac_address: {mac_address}')
+    #mention_ids = ['to-murakami@akioka-ltd.jp']
+    #send_notify(mention_ids, f'{mac_address}でデータを取得しました。')
     
     
     try:
